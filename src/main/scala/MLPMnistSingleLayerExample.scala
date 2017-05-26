@@ -74,6 +74,8 @@ object MLPMnistSingleLayerExample {
       eval.eval(next.getLabels, output)
     }
 
+    log.info(eval.stats())
+
     log.info("End....")
   }
 }
