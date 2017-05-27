@@ -58,23 +58,23 @@ object SparkMNIST {
       .seed(rngSeed)
       .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
       .iterations(1)
-      .learningRate(0.1) //specify the learning rate
-      .updater(Updater.ADAM).momentum(0.9) //specify the rate of change of the learning rate.
+      .learningRate(0.1)
+      .updater(Updater.ADAM).momentum(0.9)
       .regularization(true).l2(1e-4)
       .list()
-      .layer(0, new DenseLayer.Builder() //create the first, input layer with xavier initialization
+      .layer(0, new DenseLayer.Builder()
         .nIn(numRows * numColumns)
         .nOut(1000)
         .activation(Activation.RELU)
         .weightInit(WeightInit.XAVIER)
         .build())
-      .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD) //create hidden layer
+      .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
         .nIn(1000)
         .nOut(outputNum)
         .activation(Activation.SOFTMAX)
         .weightInit(WeightInit.XAVIER)
         .build())
-      .pretrain(false).backprop(true) //use backpropagation to adjust weights
+      .pretrain(false).backprop(true)
       .build()
 
     val model = new MultiLayerNetwork(conf)
@@ -83,8 +83,8 @@ object SparkMNIST {
 
     val tm = new ParameterAveragingTrainingMaster.Builder(examplesPerDataSetObject)
       .workerPrefetchNumBatches(0)
-      .saveUpdater(true) //save things like adagrad squared gradient histories
-      .averagingFrequency(5) //Do 5 minibatch fit operations per worker, then average and redistribute parameters
+      .saveUpdater(true) //save updater history
+      .averagingFrequency(5) //Average number of fit operations per worker and redistribute parameters
       .batchSizePerWorker(examplesPerDataSetObject) //Number of examples that each worker uses per fit operation
       .build()
 
